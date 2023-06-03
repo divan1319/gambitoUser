@@ -7,6 +7,7 @@ import (
 
 	"github.com/divan1319/gambitoUser/models"
 	"github.com/divan1319/gambitoUser/secretm"
+	_ "github.com/go-sql-driver/mysql"
 )
 
 var SecretModel models.SecretRDSJson
@@ -16,11 +17,20 @@ var Db *sql.DB
 func ReadSecret() error {
 	SecretModel, err = secretm.GetSecret(os.Getenv("SecretName"))
 	return err
+
 }
 
 func DbConnect() error {
 	Db, err = sql.Open("mysql", ConnStr(SecretModel))
+	if err != nil {
+		return err
+	}
+	err = Db.Ping()
+	if err != nil {
+		return err
+	}
 
+	return nil
 }
 
 func ConnStr(claves models.SecretRDSJson) string {

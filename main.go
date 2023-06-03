@@ -43,6 +43,9 @@ func LamdaExec(ctx context.Context, event events.CognitoEventUserPoolsPostConfir
 		return event, err
 	}
 
+	err = bd.SignUp(datos)
+	return event, err
+
 }
 
 func ValidarParametros() bool {
